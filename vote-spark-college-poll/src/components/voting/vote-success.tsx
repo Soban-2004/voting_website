@@ -13,7 +13,7 @@ export function VoteSuccess({ email, onReset }: VoteSuccessProps) {
     const receiptData = {
       voterId: email,
       timestamp: new Date().toISOString(),
-      electionId: "college-election-2024",
+      electionId: "college-election-2025",
       status: "vote-submitted"
     }
     
@@ -86,20 +86,11 @@ export function VoteSuccess({ email, onReset }: VoteSuccessProps) {
               <li>• You cannot vote again in this election</li>
               <li>• Your vote cannot be changed or withdrawn</li>
               <li>• Results will be announced after the voting period ends</li>
-              <li>• Keep your receipt for your records</li>
             </ul>
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Button
-              onClick={generateReceipt}
-              variant="outline"
-              className="flex-1 h-12"
-            >
-              <Download className="mr-2 h-4 w-4" />
-              Download Receipt
-            </Button>
             
             <Button
               onClick={onReset}
@@ -114,10 +105,7 @@ export function VoteSuccess({ email, onReset }: VoteSuccessProps) {
           {/* Footer */}
           <div className="text-center pt-6 border-t">
             <p className="text-sm text-muted-foreground">
-              Questions? Contact the Election Committee at{" "}
-              <a href="mailto:elections@college.edu" className="text-primary hover:underline">
-                elections@college.edu
-              </a>
+              Issues? Contact the Nearby Member of Election Committee
             </p>
           </div>
         </CardContent>

@@ -1,12 +1,12 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
 
-@layer base {
+/* @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -36,7 +36,7 @@ All colors MUST be HSL.
     --input: 214.3 31.8% 91.4%;
     --ring: 217.2 91.2% 59.8%;
 
-    /* Voting specific colors */
+   
     --vote-success: 142.1 76.2% 36.3%;
     --vote-warning: 38 92% 50%;
     --vote-info: 217.2 91.2% 59.8%;
@@ -92,7 +92,7 @@ All colors MUST be HSL.
     --input: 217.2 32.6% 17.5%;
     --ring: 217.2 91.2% 59.8%;
 
-    /* Dark mode voting colors */
+
     --vote-success: 142.1 76.2% 36.3%;
     --vote-warning: 38 92% 50%;
     --vote-info: 217.2 91.2% 59.8%;
@@ -118,4 +118,244 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+} */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Enhanced dark-themed design system with red/white palette */
+@layer base {
+  :root {
+    /* ===== 1. MAIN COLOR THEME (DARK WITH RED/WHITE) ===== */
+    /* Dark base with red accents - easily customizable */
+    --background: 0 0% 7%; /* Deep black */
+    --foreground: 0 0% 100%; /* Pure white */
+    
+    /* Card styling */
+    --card: 0 0% 10% / 50%; /* 50% transparent dark color */
+    --card-foreground: 0 0% 100%;
+    
+    /* Popover components */
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 100%;
+    
+    /* Primary brand colors - Vibrant red */
+    --primary: 0 84% 60%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary colors - Dark gray */
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Muted elements */
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65%;
+    
+    /* Accent colors - Lighter red for highlights */
+    --accent: 0 72% 50%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Destructive/error states - Bright red */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Borders and inputs */
+    --border: 0 100% 70%;
+    --input: 0 0% 20%;
+    --ring: 0 84% 60%;
+    
+    /* ===== 2. VOTING SYSTEM COLORS ===== */
+    --vote-success: 142.1 76.2% 36.3%; /* Keep green for success */
+    --vote-warning: 38 92% 50%; /* Amber for warning */
+    --vote-info: 0 84% 60%; /* Changed to red */
+    --vote-gradient: linear-gradient(135deg, 
+      hsl(0 84% 60%), 
+      hsl(0 72% 50%));
+    --vote-card-shadow: 0 20px 40px -10px hsl(0 84% 60% / 0.25);
+    --voting-timer: 0 84% 60%;
+    
+    --radius: 0.5rem;
+    
+    /* ===== 3. SIDEBAR STYLING ===== */
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 84% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 0 84% 60%;
+    
+    /* ===== 4. TRANSPARENCY EFFECTS FOR CARDS ===== */
+    --glass-bg: 0 0% 10% / 0.0; /* Semi-transparent black */
+    --glass-border: 0 0% 100% / 0.1; /* Very subtle white border */
+    --neon-glow: 0 84% 60% / 0.3; /* Red glow effect */
+    
+    /* ===== 5. GRADIENTS ===== */
+    --primary-gradient: linear-gradient(135deg, 
+      hsl(0 84% 60%), 
+      hsl(0 72% 50%));
+    --dark-gradient: linear-gradient(135deg, 
+      hsl(0 0% 7%), 
+      hsl(0 0% 10%));
+  }
+
+  /* Light theme override (optional) */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 0 84% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 7%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 72% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 84% 60%;
+    --vote-success: 142.1 76.2% 36.3%;
+    --vote-warning: 38 92% 50%;
+    --vote-info: 0 84% 60%;
+    --vote-gradient: linear-gradient(135deg, hsl(0 84% 60%), hsl(0 72% 50%));
+    --vote-card-shadow: 0 10px 25px -5px hsl(0 84% 60% / 0.1);
+    --voting-timer: 0 84% 60%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 7%;
+    --sidebar-primary: 0 84% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 7%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 0 84% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    /* ===== 1. VIDEO BACKGROUND STYLING ===== */
+    /* Add this if you want a video background on the main page */
+    /* position: relative; */
+  }
+  
+  /* ===== 1. VIDEO CONTAINER STYLES ===== */
+  /* Uncomment and customize these for your 10-second looping video */
+  /*
+  .video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    opacity: 0.5; /* Adjust transparency as needed */
+  /*
+  .video-container video {
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+  }
+  */
+  
+  
+  
+  /* ===== 3. ICON COLOR MATCHING ===== */
+  /* This ensures icons match the red/white theme */
+  .icon-red {
+    color: hsl(var(--primary));
+  }
+  
+  .icon-white {
+    color: hsl(var(--foreground));
+  }
+  
+  /* ===== 4. CANDIDATE PHOTO STYLING ===== */
+  /* 🔥 CANDIDATE PHOTO CONTROL - CHANGE THESE LINES FOR CANDIDATE PHOTOS 🔥 */
+  .candidate-photo {
+    @apply w-40 h-40 rounded-full object-cover border-4; /* ⬅️ CHANGE w-40 h-40 FOR PHOTO SIZE */
+    border-color: hsl(var(--primary)); /* ⬅️ CHANGE --primary TO DIFFERENT COLOR VARIABLE */
+    box-shadow: 0 0 25px hsl(var(--neon-glow)); /* ⬅️ CHANGE 25px FOR GLOW INTENSITY */
+    transition: all 0.3s ease; /* ⬅️ ADD/REMOVE HOVER ANIMATIONS */
+  }
+  
+  /* Hover effect for candidate photos */
+  .candidate-photo:hover {
+    transform: scale(1.05); /* ⬅️ CHANGE 1.05 FOR HOVER SCALE EFFECT */
+    box-shadow: 0 0 35px hsl(var(--neon-glow)); /* ⬅️ CHANGE 35px FOR HOVER GLOW */
+  }
+  
+  /* ===== 5. BUTTON STYLES ===== */
+  /* Enhanced button styles matching the theme */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium;
+    @apply hover:bg-accent hover:shadow-lg transition-all duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+    background: var(--primary-gradient);
+  }
+  
+  /* ===== 6. HIDE RECEIPT DOWNLOAD ===== */
+  /* This will hide the download receipt option */
+  .download-receipt {
+    @apply hidden;
+  }
+  
+  /* ===== 7. NEON GLOW EFFECTS ===== */
+  /* For interactive elements */
+  .neon-glow {
+    box-shadow: 0 0 10px hsl(var(--neon-glow));
+  }
+  
+  .neon-glow:hover {
+    box-shadow: 0 0 20px hsl(var(--neon-glow));
+  }
+  
+  /* ===== 8. GRADIENT TEXT ===== */
+  .gradient-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  @keyframes splashFade {
+  0% { opacity: 1; }
+  70% { opacity: 1; } /* Stay visible for most of the animation */
+  100% { opacity: 0; visibility: hidden; }
+}
+
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: hsl(var(--background));
+  z-index: 9999;
+  animation: splashFade 3s ease-in-out forwards;
+}
+
+.splash-logo {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px hsl(var(--primary)/0.5));
+}
+
 }

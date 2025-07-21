@@ -23,49 +23,53 @@ interface Candidate {
   imageUrl?: string
 }
 
+// Store images in public/candidates folder and reference them like this:
 const candidates: Candidate[] = [
   {
     id: "candidate1",
     name: "Alex Johnson",
     position: "President",
-    description: "Senior, Computer Science. Advocate for campus sustainability and student wellness programs."
+    description: "Senior, Computer Science. Advocate for campus sustainability and student wellness programs.",
+    imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face&auto=format"
   },
   {
     id: "candidate2", 
     name: "Maria Rodriguez",
     position: "President",
-    description: "Junior, Business Administration. Focus on improving campus facilities and academic support services."
+    description: "Junior, Business Administration. Focus on improving campus facilities and academic support services.",
+    imageUrl: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face&auto=format"
   },
   {
     id: "candidate3",
     name: "David Chen",
     position: "President", 
-    description: "Senior, Engineering. Champion for technology integration and career development initiatives."
+    description: "Senior, Engineering. Champion for technology integration and career development initiatives.",
+    imageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face&auto=format"
   },
   {
     id: "candidate4",
     name: "Sarah Williams",
     position: "Secretary",
-    description: "Junior, Liberal Arts. Passionate about diversity, inclusion, and mental health awareness."
+    description: "Junior, Liberal Arts. Passionate about diversity, inclusion, and mental health awareness.",
+    imageUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face&auto=format"
   },
   {
   id: "candidate5",
   name: "Rohit Mehra",
   position: "Treasurer",
-  description: "Dedicated to transparency and communication."
+  description: "Dedicated to transparency and communication.",
+  imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face&auto=format"
   }
 ]
 
 export function VotingBallot({ email, token, onVoteSuccess }: VotingBallotProps) {
-  // const [selectedCandidate, setSelectedCandidate] = useState<string>("")
   const [selectedCandidates, setSelectedCandidates] = useState<Record<string, string>>({})
   const requiredPositions = Array.from(new Set(candidates.map(c => c.position)))
   const [loading, setLoading] = useState(false)
   const [votingEnded, setVotingEnded] = useState(false)
   const { toast } = useToast()
 
-  // Set voting end time (2 hours from now for demo)
-  const votingEndTime = new Date(Date.now() + 2 * 60 * 60 * 1000)
+  const votingEndTime = new Date(Date.now() + 5 * 60 * 1000)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -79,64 +83,63 @@ export function VotingBallot({ email, token, onVoteSuccess }: VotingBallotProps)
   }, [votingEndTime])
 
   const submitVote = async () => {
-      const requiredPositions = Array.from(new Set(candidates.map(c => c.position)))
-      const hasAllVotes = requiredPositions.every(pos => selectedCandidates[pos])
+    const requiredPositions = Array.from(new Set(candidates.map(c => c.position)))
+    const hasAllVotes = requiredPositions.every(pos => selectedCandidates[pos])
 
-      if (!hasAllVotes) {
-        toast({
-          title: "Incomplete Vote",
-          description: "Please select a candidate for each position before submitting.",
-          variant: "destructive"
-        })
-        return
-      }
-
-      if (votingEnded) {
-        toast({
-          title: "Voting Closed",
-          description: "The voting period has ended.",
-          variant: "destructive"
-        })
-        return
-      }
-
-      setLoading(true)
-      try {
-        const voteData = requiredPositions.reduce((acc, position) => {
-          const candidateId = selectedCandidates[position]
-          const candidate = candidates.find(c => c.id === candidateId)
-          acc[`vote_${position.toLowerCase().replace(/\s+/g, "_")}`] = candidateId
-          acc[`name_${position.toLowerCase().replace(/\s+/g, "_")}`] = candidate?.name
-          return acc
-        }, {} as Record<string, string>)
-
-        const { error } = await supabase
-          .from("voters")
-          .update({
-            voted: true,
-            ...voteData
-          })
-          .eq("email", email)
-          .eq("token", token)
-
-        if (error) throw error
-
-        toast({
-          title: "Vote Submitted Successfully",
-          description: "Thank you for participating!",
-        })
-
-        onVoteSuccess()
-      } catch (error) {
-        toast({
-          title: "Submission Failed",
-          description: "Unable to submit your vote. Please try again.",
-          variant: "destructive"
-        })
-      }
-      setLoading(false)
+    if (!hasAllVotes) {
+      toast({
+        title: "Incomplete Vote",
+        description: "Please select a candidate for each position before submitting.",
+        variant: "destructive"
+      })
+      return
     }
 
+    if (votingEnded) {
+      toast({
+        title: "Voting Closed",
+        description: "The voting period has ended.",
+        variant: "destructive"
+      })
+      return
+    }
+
+    setLoading(true)
+    try {
+      const voteData = requiredPositions.reduce((acc, position) => {
+        const candidateId = selectedCandidates[position]
+        const candidate = candidates.find(c => c.id === candidateId)
+        acc[`vote_${position.toLowerCase().replace(/\s+/g, "_")}`] = candidateId
+        acc[`name_${position.toLowerCase().replace(/\s+/g, "_")}`] = candidate?.name
+        return acc
+      }, {} as Record<string, string>)
+
+      const { error } = await supabase
+        .from("voters")
+        .update({
+          voted: true,
+          ...voteData
+        })
+        .eq("email", email)
+        .eq("token", token)
+
+      if (error) throw error
+
+      toast({
+        title: "Vote Submitted Successfully",
+        description: "Thank you for participating!",
+      })
+
+      onVoteSuccess()
+    } catch (error) {
+      toast({
+        title: "Submission Failed",
+        description: "Unable to submit your vote. Please try again.",
+        variant: "destructive"
+      })
+    }
+    setLoading(false)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 p-4">
@@ -148,7 +151,7 @@ export function VotingBallot({ email, token, onVoteSuccess }: VotingBallotProps)
               <Award className="h-12 w-12 text-primary" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold">College Election 2024</h1>
+          <h1 className="text-4xl font-bold">College Election 2025</h1>
           <p className="text-lg text-muted-foreground">Select your preferred candidate for Student Body President</p>
           <div className="flex justify-center">
             <VotingTimer endTime={votingEndTime} />
@@ -188,8 +191,8 @@ export function VotingBallot({ email, token, onVoteSuccess }: VotingBallotProps)
                 value={selectedCandidates[position] || ""}
                 onValueChange={(value) => {
                   setSelectedCandidates(prev => ({ ...prev, [position]: value }))
-                    }}
-                >
+                }}
+              >
                 <div className="grid gap-4">
                   {candidates
                     .filter((c) => c.position === position)
@@ -198,16 +201,37 @@ export function VotingBallot({ email, token, onVoteSuccess }: VotingBallotProps)
                         <RadioGroupItem
                           value={candidate.id}
                           id={candidate.id}
-                          className="peer sr-only"
+                          className="peer absolute opacity-0 w-0 h-0"
                         />
                         <Label
                           htmlFor={candidate.id}
                           className="flex cursor-pointer items-start space-x-4 rounded-lg border-2 border-muted p-6 hover:border-primary/50 hover:bg-primary/5 peer-checked:border-primary peer-checked:bg-primary/10 transition-all duration-200"
-                          >
+                        >
                           <div className="flex-shrink-0">
-                            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                              <User className="h-6 w-6 text-primary" />
-                            </div>
+                            {candidate.imageUrl ? (
+                              <div className="h-16 w-16 rounded-full overflow-hidden border-4 border-primary/30 shadow-lg hover:border-primary hover:shadow-xl transition-all duration-300 bg-gray-100">
+                                <img 
+                                  src={candidate.imageUrl} 
+                                  alt={candidate.name}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    // Fallback if image fails to load
+                                    e.currentTarget.style.display = 'none';
+                                    e.currentTarget.parentElement!.innerHTML = `
+                                      <div class="h-full w-full rounded-full bg-primary/10 flex items-center justify-center">
+                                        <svg class="h-8 w-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                      </div>
+                                    `;
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
+                                <User className="h-8 w-8 text-primary" />
+                              </div>
+                            )}
                           </div>
                           <div className="flex-grow">
                             <h3 className="font-semibold text-lg">{candidate.name}</h3>
@@ -216,15 +240,17 @@ export function VotingBallot({ email, token, onVoteSuccess }: VotingBallotProps)
                             </p>
                           </div>
                           <div className="flex-shrink-0">
-                            <div className="h-5 w-5 rounded-full border-2 border-primary peer-checked:bg-primary peer-checked:border-primary">
-                              {selectedCandidates[position] === candidate.id && (
-                                <CheckCircle className="h-5 w-5 text-primary-foreground fill-current" />
-                              )}
-                            </div>
+                            {selectedCandidates[position] === candidate.id ? (
+                              <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center shadow-lg">
+                                <div className="h-3 w-3 rounded-full bg-white"></div>
+                              </div>
+                            ) : (
+                              <div className="h-6 w-6 rounded-full border-2 border-muted-foreground/50 bg-background"></div>
+                            )}
                           </div>
                         </Label>
                       </div>
-                  ))}
+                    ))}
                 </div>
               </RadioGroup>
             </CardContent>
@@ -236,6 +262,7 @@ export function VotingBallot({ email, token, onVoteSuccess }: VotingBallotProps)
           <Button
             onClick={submitVote}
             disabled={loading || votingEnded || Object.keys(selectedCandidates).length < requiredPositions.length}
+            className="min-w-[200px]"
           >
             {loading ? (
               <>

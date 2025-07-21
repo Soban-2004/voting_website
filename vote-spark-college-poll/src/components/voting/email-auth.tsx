@@ -8,9 +8,11 @@ import { Loader2, Mail, Shield, Vote } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { supabase } from "@/integrations/supabase/client"
 
+
 interface EmailAuthProps {
-  onAuthSuccess: (email: string, token: string) => void
+  onAuthSuccess: (email: string, token: string ) => void
 }
+
 
 export function EmailAuth({ onAuthSuccess }: EmailAuthProps) {
   const [step, setStep] = useState<'email' | 'otp'>('email')
@@ -19,12 +21,12 @@ export function EmailAuth({ onAuthSuccess }: EmailAuthProps) {
   const [loading, setLoading] = useState(false)
   const [sentToken, setSentToken] = useState('')
   const { toast } = useToast()
+  
 
   const isValidCollegeEmail = (email: string) => {
-    // Add your college domain validation here
-    // const collegeDomains = ['college.edu', 'university.edu', 'student.college.edu']
-    // return collegeDomains.some(domain => email.endsWith(`@${domain}`))
-    return true // For demo purposes, assume all emails are valid
+    const collegeDomains = ['eec.srmrmp.edu.in']; // Add your actual domain(s) here
+    return collegeDomains.some(domain => email.endsWith(`@${domain}`));
+    // return true // For demo purposes, assume all emails are valid
   }
 
   const sendOTP = async () => {
@@ -70,18 +72,27 @@ export function EmailAuth({ onAuthSuccess }: EmailAuthProps) {
       }
 
       // In a real implementation, send OTP via email service
-      // For demo purposes, we'll show the OTP in console
-      console.log(`OTP for ${email}: ${generatedOTP}`)
- 
+      // // For demo purposes, we'll show the OTP in console
+      console.log(`OTP for ${email}: ${generatedOTP}`)    
+      // const { error: emailError } = await supabase.functions.invoke('send-otp', {
+      //   body: {
+      //     email: email,
+      //     otp: generatedOTP
+      //   }
+      // })
 
+      // if (emailError) {
+      //   throw new Error('Failed to send OTP email')
+      // }
 
       toast({
         title: "OTP Sent",
         description: `Verification code sent to ${email}. Check your inbox.`,
       })
       
-      setStep('otp')
+  setStep('otp')
     } catch (error) {
+      console.error('Error sending OTP:', error)
       toast({
         title: "Error",
         description: "Failed to send verification code. Please try again.",
@@ -142,7 +153,7 @@ export function EmailAuth({ onAuthSuccess }: EmailAuthProps) {
               <Vote className="h-8 w-8 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">College Election 2024</CardTitle>
+          <CardTitle className="text-2xl font-bold">College Election 2025</CardTitle>
           <CardDescription>
             Secure voting with email verification
           </CardDescription>
@@ -158,7 +169,7 @@ export function EmailAuth({ onAuthSuccess }: EmailAuthProps) {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="student@college.edu"
+                  placeholder="reg.no@eec.srmrmp.edu.in"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="h-12"
@@ -190,7 +201,7 @@ export function EmailAuth({ onAuthSuccess }: EmailAuthProps) {
                 <div>
                   <h3 className="font-semibold">Enter Verification Code</h3>
                   <p className="text-sm text-muted-foreground">
-                    We sent a 6-digit code to {email}
+                    We sent a 6-digit code to {email}<br></br>(Check your inbox or spam folder)
                   </p>
                 </div>
               </div>
@@ -241,5 +252,6 @@ export function EmailAuth({ onAuthSuccess }: EmailAuthProps) {
         </CardContent>
       </Card>
     </div>
+    
   )
 }
